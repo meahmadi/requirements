@@ -3,16 +3,22 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">{{ post.title }}</h1>
-<p>{{ post.content }}</p>
-<p><small class="text-muted">Posted on {{ post.date_posted|date:"F j, Y" }}</small></p>
+<div class="container">
+    <div class="card shadow-sm my-5">
+        <div class="card-body">
+            <h2 class="card-title text-primary">{{ post.title }}</h2>
+            <p><small class="text-muted">ارسال شده {{ post.get_post_jalali_date }}</small></p>
+            <hr>
+            <p class="card-text">{{ post.content }}</p>
 
-{% if post.project %}
-    <p><a href="{% url 'project_detail' post.project.id %}" class="btn btn-link">View Related Project</a></p>
-{% endif %}
-{% if post.task %}
-    <p><a href="{% url 'task_detail' post.task.id %}" class="btn btn-link">View Related Task</a></p>
-{% endif %}
-
-<a href="{% url 'blog_list' %}" class="btn btn-secondary mt-4">Back to Blog</a>
+            {% if post.project %}
+                <p><a href="{% url 'project_detail' post.project.id %}" class="btn btn-outline-primary mt-4">پروژه‌های مرتبط</a></p>
+            {% endif %}
+            {% if post.task %}
+                <p><a href="{% url 'task_detail' post.task.id %}" class="btn btn-outline-secondary mt-4">کارهای مرتبط</a></p>
+            {% endif %}
+            <a href="{% url 'blog_list' %}" class="btn btn-link mt-4">به اخبار برگردد</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

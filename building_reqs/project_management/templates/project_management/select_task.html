@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Select Task</title>
+    <title>انتخاب کار</title>
 </head>
 <body>
-    <h1>Select Task: {{ task.title }}</h1>
-    <p>Are you sure you want to select this task?</p>
+    <h1>انتخاب کار: {{ task.title }}</h1>
+    <p>آیا مطمئنی میخواهید این کار را انتخاب کنید؟</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Confirm</button>
+        <button type="submit">بله</button>
     </form>
 </body>
 </html>

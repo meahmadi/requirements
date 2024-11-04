@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Progress for {{ task.title }}</title>
+    <title>تکامل روند کار برای  {{ task.title }}</title>
 </head>
 <body>
-    <h1>Update Progress for {{ task.title }}</h1>
+    <h1>تکامل روند کار برای  {{ task.title }}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit Progress</button>
+        <button type="submit">ارسال تکامل</button>
     </form>
 </body>
 </html>

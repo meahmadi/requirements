@@ -4,20 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Project Management Site{% endblock %}</title>
+    <title>{% block title %}نیازهای مرتبط به جهان‌واره آینده گردی{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/4.5.3-rtl/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'project_management/styles.css' %}" rel="stylesheet">
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand text-white" href="{% url 'project_list' %}">My Projects</a>
+        <a class="navbar-brand text-white" href="{% url 'project_list' %}">پروژه ها</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'project_list' %}">Home</a>
+                    <a class="nav-link text-white" href="{% url 'project_list' %}">صفحه اصلی</a>
                 </li>
             </ul>
         </div>
@@ -28,7 +33,7 @@
     </div>
 
     <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>&copy; 2023 My Project Management Site</p>
+        <p>&copy; ۱۴۰۳ جهان‌واره آینده‌گردی</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

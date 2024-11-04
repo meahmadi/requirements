@@ -1,18 +1,18 @@
 {% extends 'project_management/base.html' %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}آخرین اخبار و موضوعات{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Latest Updates</h1>
+<h1 class="mb-5 text-center">آخرین تغییرات</h1>
 <div class="row">
     {% for post in posts %}
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <h5 class="card-title">{{ post.title }}</h5>
+                    <h4 class="card-title text-primary">{{ post.title }}</h4>
                     <p class="card-text">{{ post.content|truncatewords:30 }}</p>
-                    <p><small class="text-muted">Posted on {{ post.date_posted|date:"F j, Y" }}</small></p>
-                    <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More</a>
+                    <p><small class="text-muted">ارسال شده {{ post.get_post_jalali_date }}</small></p>
+                    <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary mt-3">Read More</a>
                 </div>
             </div>
         </div>
