@@ -1,0 +1,8 @@
+{% extends 'project_management/base.html' %}
+
+{% block content %}
+<h1>{{ task.title }}</h1>
+<p><strong>Project:</strong> <a href="{% url 'project_detail' task.project.id %}">{{ task.project.title }}</a></p>
+<p><strong>Difficulty Level:</strong> {{ task.difficulty }}</p>
+<p>{{ task.description|safe }}</p>
+{% endblock %}

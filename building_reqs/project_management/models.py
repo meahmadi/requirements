@@ -27,6 +27,7 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_selected = models.BooleanField(default=False)
+    difficulty = models.PositiveIntegerField(default=1)
 
     def get_create_jalali_date(self):
         return jdatetime.datetime.fromgregorian(datetime=self.created_at).strftime('%Y/%m/%d')

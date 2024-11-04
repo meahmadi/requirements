@@ -43,4 +43,7 @@ footer p {
     margin: 0;
 }
 
+.table-bordered {
+    border: 0.5px #333;
+}
 

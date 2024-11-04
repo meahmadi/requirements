@@ -7,16 +7,40 @@ from .forms import TaskSelectionForm, ProgressUpdateForm
 def project_list(request):
     projects = Project.objects.all()
     recent_posts = BlogPost.objects.order_by('-date_posted')[:3]
+    tasks_by_difficulty = {level: [] for level in range(1, 11)}
+    for task in Task.objects.all():
+        tasks_by_difficulty[task.difficulty].append(task)
     return render(request, 'project_management/project_list.html', {
         'projects': projects,
         'posts': recent_posts,
+        'tasks_by_difficulty' : tasks_by_difficulty,
     })
 
 
 def project_detail(request, project_id):
     project = get_object_or_404(Project, id=project_id)
+    tasks_by_difficulty = {level: [] for level in range(1, 11)}
+    for task in project.tasks.all():
+        tasks_by_difficulty[task.difficulty].append(task)
     tasks = project.tasks.all()
-    return render(request, 'project_management/project_detail.html', {'project': project, 'tasks': tasks})
+    return render(request, 'project_management/project_detail.html', {'project': project, 'tasks': tasks, 'tasks_by_difficulty': tasks_by_difficulty})
+
+def task_list(request):
+    tasks = Task.objects.all()
+    tasks_by_difficulty = {level: [] for level in range(1, 11)}
+    for task in tasks:
+        tasks_by_difficulty[task.difficulty].append(task)
+    return render(request, 'project_management/task_list.html', {
+        'tasks_by_difficulty' : tasks_by_difficulty,
+        'tasks':tasks
+    })
+
+def task_detail(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    context = {
+        'task': task
+    }
+    return render(request, 'project_management/task_detail.html', context)
 
 @login_required
 def select_task(request, task_id):
