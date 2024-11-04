@@ -1,0 +1,37 @@
+{% extends 'project_management/base.html' %}
+
+{% block title %}Projects{% endblock %}
+
+
+{% block content %}
+<h2 class="mt-5">Latest Blog Updates</h2>
+<div class="row">
+    {% for post in posts|slice:":3" %}  <!-- Limit to 3 recent posts -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                    <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<a href="{% url 'blog_list' %}" class="btn btn-link">See All Blog Posts</a>
+
+<h1 class="mb-4">Available Projects</h1>
+<div class="row">
+    {% for project in projects %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.name }}</h5>
+                    <p class="card-text">{{ project.description }}</p>
+                    <a href="{% url 'project_detail' project.id %}" class="btn btn-primary">View Tasks</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

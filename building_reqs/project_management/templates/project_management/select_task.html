@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Task</title>
+</head>
+<body>
+    <h1>Select Task: {{ task.title }}</h1>
+    <p>Are you sure you want to select this task?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+    </form>
+</body>
+</html>
