@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'project_management',
+    'ckeditor',
+    'ckeditor_uploader',  # If you want to allow image/file uploads
 ]
 
 MIDDLEWARE = [
@@ -122,3 +124,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 'auto',
+        'extraPlugins': ','.join([
+            'uploadimage',  # Include the upload image plugin
+            'codesnippet',  # Code syntax highlighting
+        ]),
+        'removePlugins': 'easyimage,cloudservices',
+    },
+}

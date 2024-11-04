@@ -9,13 +9,13 @@
             <h2 class="card-title text-primary">{{ post.title }}</h2>
             <p><small class="text-muted">ارسال شده {{ post.get_post_jalali_date }}</small></p>
             <hr>
-            <p class="card-text">{{ post.content }}</p>
+            <p class="card-text">{{ post.content|safe }}</p>
 
             {% if post.project %}
                 <p><a href="{% url 'project_detail' post.project.id %}" class="btn btn-outline-primary mt-4">پروژه‌های مرتبط</a></p>
             {% endif %}
             {% if post.task %}
-                <p><a href="{% url 'task_detail' post.task.id %}" class="btn btn-outline-secondary mt-4">کارهای مرتبط</a></p>
+                <p><a href="{% url 'project_detail' post.task.project.id %}" class="btn btn-outline-secondary mt-4">کارهای مرتبط</a></p>
             {% endif %}
             <a href="{% url 'blog_list' %}" class="btn btn-link mt-4">به اخبار برگردد</a>
         </div>

@@ -10,7 +10,7 @@
             <div class="card shadow-sm h-100">
                 <div class="card-body">
                     <h4 class="card-title text-primary">{{ post.title }}</h4>
-                    <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                    <p class="card-text">{{ post.content|truncatewords:30|safe }}</p>
                     <p><small class="text-muted">ارسال شده {{ post.get_post_jalali_date }}</small></p>
                     <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary mt-3">Read More</a>
                 </div>

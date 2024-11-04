@@ -2,11 +2,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 import jdatetime
 
 class Project(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField()
+    description = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_jalali_date(self):
@@ -19,10 +20,10 @@ class Project(models.Model):
 class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = RichTextField()
     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=20, choices=[('Not Started', 'Not Started'), ('In Progress', 'In Progress'), ('Completed', 'Completed')])
-    progress_report = models.TextField(blank=True, null=True)
+    progress_report = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_selected = models.BooleanField(default=False)
@@ -37,7 +38,7 @@ class Task(models.Model):
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
-    content = models.TextField()
+    content = RichTextField()
     date_posted = models.DateTimeField(auto_now_add=True)
     project = models.ForeignKey('Project', on_delete=models.SET_NULL, null=True, blank=True)
     task = models.ForeignKey('Task', on_delete=models.SET_NULL, null=True, blank=True)
