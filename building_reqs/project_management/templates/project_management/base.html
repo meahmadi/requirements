@@ -12,6 +12,8 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/4.5.3-rtl/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'project_management/styles.css' %}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg-pan-zoom/3.6.1/svg-pan-zoom.min.js"></script>
+
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -19,6 +21,8 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <a class="navbar-brand text-white" href="{% url 'login' %}">ورود</a>
+        <a class="navbar-brand text-white" href="{% url 'signup' %}">ثبت نام</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">

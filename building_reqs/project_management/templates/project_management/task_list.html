@@ -1,26 +1,38 @@
 {% extends 'project_management/base.html' %}
-
+{% load project_filters %}
 {% block content %}
-<h1>All Tasks by Difficulty Level</h1>
+<div class="container my-4">
+    <h1 class="mb-3">All Tasks by Difficulty Level</h1>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Difficulty Level</th>
-            <th>Tasks</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for level, tasks in tasks_by_difficulty.items %}
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
             <tr>
-                <td>{{ level }}</td>
-                <td>
-                    {% for task in tasks %}
-                        <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a><br>
-                    {% endfor %}
-                </td>
+                <th style="width: 10%;">Difficulty Level</th>
+                <th>Tasks</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for level, tasks in tasks_by_difficulty.items %}
+                <tr>
+                    <td class="align-middle text-center font-weight-bold">{{ level }}</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-3">
+                            {% for task in tasks %}
+                                {% if request.user|can_view_project:task.project %}
+                                <div class="card text-dark bg-light mb-3" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ task.title }}</h5>
+                                        <p class="card-text">Difficulty Level: {{ task.difficulty }}</p>
+                                        <a href="{% url 'task_detail' task.id %}" class="btn btn-primary btn-sm">View Task</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'project_management/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Interactive Map</h2>
+
+    {% for map in maps %}
+    <div class="map-container">
+        <h3>{{ map.title }}</h3>
+        <object data="{{ map.svg_file.url }}" type="image/svg+xml" id="svgMap" class="svg-map">
+        </object>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const svgMap = document.getElementById("svgMap");
+    
+    svgMap.addEventListener("load", function() {
+        const svgDoc = svgMap.contentDocument;
+        
+        {% for map in maps %}
+            {% for link in map.links.all %}
+                const element = svgDoc.getElementById("{{ link.element_id }}");
+                if (element) {
+                    element.style.cursor = "pointer";
+                    element.addEventListener("click", function() {
+                        window.location.href = "{{ link.get_url }}";
+                    });
+                }
+            {% endfor %}
+        {% endfor %}
+    });
+
+    svgMap.addEventListener("load", function() {
+        const panZoom = svgPanZoom(svgMap.contentDocument, {
+            zoomEnabled: true,
+            controlIconsEnabled: true
+        });
+    });
+});
+</script>
+
+<style>
+    .svg-map {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+    }
+</style>
+{% endblock %}

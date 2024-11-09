@@ -3,55 +3,67 @@
 {% block title %}{{ project.name }}{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">{{ project.name }}</h1>
-<p>{{ project.description | safe }}</p>
+<div class="container my-4">
+    <h1 class="mb-4">{{ project.name }}</h1>
+    <p>{{ project.description | safe }}</p>
 
-<h2 class="mt-5 mb-4">کارها</h2>
-<div class="row">
-    {% for task in tasks %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ task.title }}</h5>
-                    <p class="card-text">{{ task.description|safe }}</p>
-                    <p>وضعیت: {{ task.status }}</p>
-                    {% if task.assigned_to %}
-                        <p>برداشته شده توسط: {{ task.assigned_to.username }}</p>
-                        {% if task.assigned_to == user %}
-                            <a href="{% url 'update_progress' task.id %}" class="btn btn-success">تکمیل روند</a>
+    <h2 class="mt-5 mb-4">کارها</h2>
+    <div class="row">
+        {% for task in tasks %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ task.title }}</h5>
+                        <p class="card-text">{{ task.description|safe }}</p>
+                        <p>وضعیت: {{ task.status }}</p>
+                        {% if task.assigned_to %}
+                            <p>برداشته شده توسط: {{ task.assigned_to.username }}</p>
+                            {% if task.assigned_to == user %}
+                                <a href="{% url 'update_progress' task.id %}" class="btn btn-success">تکمیل روند</a>
+                            {% endif %}
+                        {% else %}
+                            <form action="{% url 'select_task' task.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">انتخاب این کار</button>
+                            </form>
                         {% endif %}
-                    {% else %}
-                        <form action="{% url 'select_task' task.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">انتخاب این کار</button>
-                        </form>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
-
-
-<h3>ساختمان کارها</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>سطح کار</th>
-            <th>کارها</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for level, tasks in tasks_by_difficulty.items %}
-            <tr>
-                <td>{{ level }}</td>
-                <td>
-                    {% for task in tasks %}
-                        <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a><br>
-                    {% endfor %}
-                </td>
-            </tr>
         {% endfor %}
-    </tbody>
-</table>
+    </div>
+
+
+    <h3 class="mt-5">ساختمان کارهای پروژه</h3>
+    <table class="table-responsive table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th style="width: 10%;">سطح سختی کار</th>
+                <th>کارها</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for level, tasks in tasks_by_difficulty.items %}
+                <tr>
+                    <td class="align-middle text-center font-weight-bold">{{ level }}</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-3">
+                            {% for task in tasks %}
+                                <div class="card text-dark bg-light mb-3" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ task.title }}</h5>
+                                        <p class="card-text">{{ task.description|safe }}</p>
+                                        <p>وضعیت: {{ task.status }}</p>
+                                        <a href="{% url 'task_detail' task.id %}" class="btn btn-primary btn-sm">نمایش کار</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
+

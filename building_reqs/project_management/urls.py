@@ -10,4 +10,7 @@ urlpatterns = [
     path('task/update/<int:task_id>/', views.update_progress, name='update_progress'),
     path('tasks/', views.task_list, name='task_list'),
     path('task/<int:task_id>/', views.task_detail, name='task_detail'), 
+    path('maps/', views.map_view, name='map_view'),
+    path('signup/', views.signup_view, name='signup'),
 ]
+

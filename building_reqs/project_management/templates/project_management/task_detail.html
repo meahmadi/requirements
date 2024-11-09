@@ -1,8 +1,18 @@
 {% extends 'project_management/base.html' %}
+{% load project_filters %}
 
 {% block content %}
-<h1>{{ task.title }}</h1>
-<p><strong>Project:</strong> <a href="{% url 'project_detail' task.project.id %}">{{ task.project.title }}</a></p>
-<p><strong>Difficulty Level:</strong> {{ task.difficulty }}</p>
-<p>{{ task.description|safe }}</p>
+<div class="container my-4">
+    <div class="card text-dark bg-light shadow-sm">
+        <div class="card-body">
+            {% if request.user|can_view_project:task.project %}
+                <h1 class="card-title">{{ task.title }}</h1>
+                <p><strong>Project:</strong> <a href="{% url 'project_detail' task.project.id %}">{{ task.project.title }}</a></p>
+                <p><strong>Difficulty Level:</strong> {{ task.difficulty }}</p>
+                <hr>
+                <div class="card-text">{{ task.description|safe }}</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

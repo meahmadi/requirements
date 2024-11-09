@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/', include('project_management.urls')),  # This connects to the project's URLs
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),  # Add this line
 ]
 
 

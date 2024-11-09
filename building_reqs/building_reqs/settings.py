@@ -141,3 +141,6 @@ CKEDITOR_CONFIGS = {
         'removePlugins': 'easyimage,cloudservices',
     },
 }
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/projects/'
