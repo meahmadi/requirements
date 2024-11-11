@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,12 @@ INSTALLED_APPS = [
     'project_management',
     'ckeditor',
     'ckeditor_uploader',  # If you want to allow image/file uploads
+
+#    'allauth',
+#    'allauth.account',
+#    'allauth.socialaccount',
+#    'allauth.socialaccount.providers.github',  # For django-allauth with GitHub
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -65,10 +72,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'building_reqs.wsgi.application'
 
@@ -102,6 +112,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.github.GithubOAuth2',  # for GitHub OAuth
+    'django.contrib.auth.backends.ModelBackend',  # for default auth
+]
+SOCIAL_AUTH_GITHUB_KEY = 'Ov23liEtFYEHqtxsGaGq'
+SOCIAL_AUTH_GITHUB_SECRET = '90dbf6ac93ca80f9550067b9eac0d6beffd4d4dc'
+
+import os
+
+try:
+    from .secrets import GITHUB_TOKEN
+except ImportError:
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -144,3 +167,5 @@ CKEDITOR_CONFIGS = {
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/projects/'
+#LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

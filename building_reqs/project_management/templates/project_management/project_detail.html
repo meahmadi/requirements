@@ -6,33 +6,8 @@
 <div class="container my-4">
     <h1 class="mb-4">{{ project.name }}</h1>
     <p>{{ project.description | safe }}</p>
-
-    <h2 class="mt-5 mb-4">کارها</h2>
-    <div class="row">
-        {% for task in tasks %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ task.title }}</h5>
-                        <p class="card-text">{{ task.description|safe }}</p>
-                        <p>وضعیت: {{ task.status }}</p>
-                        {% if task.assigned_to %}
-                            <p>برداشته شده توسط: {{ task.assigned_to.username }}</p>
-                            {% if task.assigned_to == user %}
-                                <a href="{% url 'update_progress' task.id %}" class="btn btn-success">تکمیل روند</a>
-                            {% endif %}
-                        {% else %}
-                            <form action="{% url 'select_task' task.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-primary">انتخاب این کار</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
+    <p><a href="{{ project.github_repo_url }}" target="_blank">GitHub Repository</a></p>
+    <p><a href="{{ project.github_wiki_url }}" target="_blank">GitHub Wiki</a></p>
 
     <h3 class="mt-5">ساختمان کارهای پروژه</h3>
     <table class="table-responsive table table-bordered table-striped">
@@ -43,18 +18,65 @@
             </tr>
         </thead>
         <tbody>
-            {% for level, tasks in tasks_by_difficulty.items %}
+            {% for level, task_data in tasks_by_difficulty.items %}
                 <tr>
                     <td class="align-middle text-center font-weight-bold">{{ level }}</td>
                     <td>
-                        <div class="d-flex flex-wrap gap-3">
-                            {% for task in tasks %}
-                                <div class="card text-dark bg-light mb-3" style="width: 18rem;">
+                        <!-- Ensure the task cards wrap within the table cell width -->
+                        <div class="d-flex flex-wrap gap-3" style="width: 100%; gap: 1rem;">
+                            {% for item in task_data %}
+                                <div class="card text-dark bg-light mb-3" style="width: 100%; max-width: 18rem;">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ task.title }}</h5>
-                                        <p class="card-text">{{ task.description|safe }}</p>
-                                        <p>وضعیت: {{ task.status }}</p>
-                                        <a href="{% url 'task_detail' task.id %}" class="btn btn-primary btn-sm">نمایش کار</a>
+                                        <a href="{% url 'task_detail' item.task.id %}" class="btn btn-primary">
+                                            <h5 class="card-title">{{ item.task.title }}</h5>
+                                        </a>
+                                        <p class="card-text">{{ item.task.description|safe }}</p>
+                                        <p>وضعیت: {{ item.task.status }}</p>
+                                        <p><a href="{{ item.task.github_issue_url }}" target="_blank">View GitHub Issue</a></p>
+
+                                        {% if item.task.assigned_to %}
+                                            <p>برداشته شده توسط: {{ item.task.assigned_to.username }}</p>
+                                            {% if item.task.latest_progress_report %}
+                                                <h5>آخرین گزارش پیشرفت</h5>
+                                                <p>{{ item.task.latest_progress_report.report|safe }}</p>
+                                                <p>تاریخ: {{ item.task.latest_progress_report.get_jalali_date }}</p>
+                                            {% else %}
+                                                <p>گزارشی موجود نیست.</p>
+                                            {% endif %}
+                                            {% if item.task.assigned_to == user %}
+                                                <a href="{% url 'add_progress_report' item.task.id %}" class="btn btn-success">افزودن گزارش پیشرفت</a>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if not item.task.assigned_to or item.task.assigned_to != user %}
+                                            {% if user in item.task.candidates.all%}
+                                                <!-- Withdraw Candidacy Form -->
+                                                <form action="{% url 'withdraw_candidacy' item.task.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-warning">لغو کاندیداتوری</button>
+                                                </form>
+                                            {% else %}
+                                                <!-- Express Interest Form -->
+                                                <form action="{% url 'express_interest' item.task.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-primary">اعلام علاقه‌مندی</button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+
+                                        <!-- Display Sub-Tasks in Difficulty Table -->
+                                        {% if item.sub_tasks %}
+                                            <h6 class="mt-3">زیرکارها:</h6>
+                                            <ul>
+                                                {% for sub_task in item.sub_tasks %}
+                                                    <li>
+                                                        <a href="{% url 'task_detail' sub_task.id %}" class="btn btn-link btn-sm">
+                                                            <strong>{{ sub_task.title }}</strong>
+                                                        </a> - وضعیت: {{ sub_task.status }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
@@ -66,4 +88,3 @@
     </table>
 </div>
 {% endblock %}
-

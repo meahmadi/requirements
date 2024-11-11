@@ -21,11 +21,10 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand text-white" href="{% url 'login' %}">ورود</a>
-        <a class="navbar-brand text-white" href="{% url 'signup' %}">ثبت نام</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <a href="{% url 'social:begin' 'github' %}">ورود</a>
                     <a class="nav-link text-white" href="{% url 'project_list' %}">صفحه اصلی</a>
                 </li>
             </ul>

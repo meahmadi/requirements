@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Task, BlogPost, Map, MapLink
+from .models import Project, Task, BlogPost, Map, MapLink, ProgressReport
 
 class ProjectAdmin(admin.ModelAdmin):
     filter_horizontal = ('visible_to_groups',)  # This makes it easier to select multiple groups
@@ -10,7 +10,6 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'date_posted')
 
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Task)
 admin.site.register(BlogPost, BlogPostAdmin)
 
 class MapLinkInline(admin.TabularInline):
@@ -22,3 +21,11 @@ class MapAdmin(admin.ModelAdmin):
 
 admin.site.register(Map, MapAdmin)
 
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'status', 'assigned_to')
+    fields = ('title', 'description', 'status', 'assigned_to', 'candidates' )  # Include candidates for selection
+    filter_horizontal = ('candidates',)  # Optional: Adds a widget to manage many-to-many fields
+
+admin.site.register(Task, TaskAdmin)
+
+admin.site.register(ProgressReport)

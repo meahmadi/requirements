@@ -18,7 +18,8 @@ class Project(models.Model):
     description = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     visible_to_groups = models.ManyToManyField(Group, blank=True, related_name="visible_projects")
-
+    github_repo_url = models.URLField(blank=True, null=True)  # URL of the GitHub repository
+    github_wiki_url = models.URLField(blank=True, null=True)  # URL of the GitHub wiki page
 
     def get_jalali_date(self):
         # Convert the datetime field to Jalali date
@@ -29,9 +30,15 @@ class Project(models.Model):
 
 class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
+    parent_task = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name="sub_tasks")
     title = models.CharField(max_length=200)
     description = RichTextField()
-    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    github_issue_url = models.URLField(blank=True, null=True)  # URL of the GitHub issue
+
+
+    assigned_to = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='assigned_tasks')
+    candidates = models.ManyToManyField(User, related_name='task_candidates', blank=True)
+
     status = models.CharField(max_length=20, choices=[('Not Started', 'Not Started'), ('In Progress', 'In Progress'), ('Completed', 'Completed')])
     progress_report = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -43,9 +50,23 @@ class Task(models.Model):
         return convert_to_persian_numbers(jdatetime.datetime.fromgregorian(datetime=self.created_at).strftime('%Y/%m/%d'))
     def get_update_jalali_date(self):
         return convert_to_persian_numbers(jdatetime.datetime.fromgregorian(datetime=self.updated_at).strftime('%Y/%m/%d'))
+    def latest_progress_report(self):
+        # Fetch the latest report
+        return self.progress_reports.order_by('-created_at').first()
     def __str__(self):
         return f"{self.title} ({self.status})"
 
+class ProgressReport(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="progress_reports")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    report = RichTextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_jalali_date(self):
+        return jdatetime.datetime.fromgregorian(datetime=self.created_at).strftime('%Y/%m/%d')
+
+    def __str__(self):
+        return f"گزارش کار {self.task.title} توسط {self.user.username}"
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)

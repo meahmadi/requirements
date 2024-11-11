@@ -7,6 +7,16 @@ class TaskSelectionForm(forms.ModelForm):
         model = Task
         fields = []  # No fields, as we only need to trigger the selection action
 
+from .models import ProgressReport
+
+class ProgressReportForm(forms.ModelForm):
+    class Meta:
+        model = ProgressReport
+        fields = ['report']
+        widgets = {
+            'report': forms.Textarea(attrs={'rows': 4}),
+        }
+
 class ProgressUpdateForm(forms.ModelForm):
     class Meta:
         model = Task

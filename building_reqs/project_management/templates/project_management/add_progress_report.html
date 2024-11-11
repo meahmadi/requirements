@@ -1,0 +1,31 @@
+{% extends 'project_management/base.html' %}
+
+{% block title %}افزودن گزارش پیشرفت{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">افزودن گزارش پیشرفت برای "{{ task.title }}"</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="report" class="form-label font-weight-bold">گزارش جدید</label>
+                    <textarea id="report" name="report" rows="5" class="form-control" required
+                              placeholder="شرح پیشرفت جدید خود را اینجا وارد کنید"></textarea>
+                    <div class="invalid-feedback">لطفاً گزارش جدیدی وارد کنید.</div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-success px-4">ارسال گزارش</button>
+                    <a href="{% url 'task_detail' task.id %}" class="btn btn-secondary px-4">بازگشت به کار</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

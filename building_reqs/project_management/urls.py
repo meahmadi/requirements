@@ -10,6 +10,9 @@ urlpatterns = [
     path('task/update/<int:task_id>/', views.update_progress, name='update_progress'),
     path('tasks/', views.task_list, name='task_list'),
     path('task/<int:task_id>/', views.task_detail, name='task_detail'), 
+    path('task/<int:task_id>/express_interest/', views.express_interest, name='express_interest'),
+    path('task/<int:task_id>/withdraw_candidacy/', views.withdraw_candidacy, name='withdraw_candidacy'),
+    path('task/add_progress_report/<int:task_id>/', views.add_progress_report, name='add_progress_report'),
     path('maps/', views.map_view, name='map_view'),
     path('signup/', views.signup_view, name='signup'),
 ]
